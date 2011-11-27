@@ -1,0 +1,39 @@
+#--------------------------------------------
+# Makefile for MS Visual C++
+# muquit@muquit.com for ghthash library
+#--------------------------------------------
+
+CC= cl /nologo /MT /W3 /Gm /GX /ZI /Od
+DEFS=  -DSTDC_HEADERS=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_MALLOC_H=1 -DHAVE_CTYPE_H=1 -DWIN32=1 -Dinline=__forceinline
+
+
+INCLUDES=  -I.
+LIBRARY=ghthash.lib
+
+# replace -O with -g in order to debug
+
+DEFINES= $(INCLUDES) $(DEFS) 
+CFLAGS= $(DEFINES)
+#CFLAGS=  $(cvars) $(cdebug) -nologo -G4 $(DEFINES)
+
+
+all: $(LIBRARY) exs
+
+# compile the ghthash.lib
+$(LIBRARY): $(OBJS)
+	cd src
+	nmake -f Makefile.win
+	cd ..
+
+exs:
+	cd examples
+	nmake -f Makefile.win
+	cd ..
+
+clean:
+	cd src
+	nmake -f Makefile.win clean
+	cd ..
+	cd examples
+	nmake -f Makefile.win clean
+	cd ..

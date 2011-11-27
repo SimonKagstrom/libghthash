@@ -1,0 +1,150 @@
+2007-07-15 Simon Kågström <ska@bth.se> (0.6.1)
+	* Updated config.guess and config.sub from automake-1.7 (Mohammad
+	Muquit)
+
+	* Allow returning the keysize on iteration, added
+	ght_first_keysize and ght_next_keysize (Shehjar Tikoo)
+
+2006-06-04 Simon Kågström <ska@bth.se> (0.6.1)
+	* Iteration is now ordered by the order of insertion (Elliot
+	Schwartz)
+
+	* Keys have been made const (Elliot Schwartz)
+
+	* Removed unistd.h from the includes in some of the examples since
+	it's not valid on windows (Muhammad Muquit)
+
+
+2006-04-10 Simon Kågström <ska@bth.se> (0.6.0)
+	* Fixed bug in rehashing when using a custom memory allocator. The
+	temporary table uses malloc, and therefore the pointers to the
+	custom free/alloc are wrong. Thanks to Thomas Koschny for pointing
+	this out and providing a fix.
+
+	* Added ght_set_bounded_buckets() which is used to employ
+	libghthash as a cache, limiting the maximum size of the buckets
+	and pushing out the last entry from the bucket.
+
+	* dict_example.c has been modified to (optionally) use bounded
+	buckets.
+
+	* Fixed an embarrassing bug in dict_example.c (strcmp returns 0 if
+	the strings are equal).
+
+	* Added manpages for the most important functions
+
+	* Fixed documentation bug pointed out by Steven Ferraro
+
+	* More info in the ChangeLog
+
+0.5.6:
+	* Fixed a segfault with hash tables of size zero by not allowing
+	  them (thanks to Elliot Schwartz for pointing this out). Updated
+	  the documentation for this as well
+	* Fixed alloc_example.c to allocate the correct number of bytes
+	  for the custom allocator (and updated incorrect documentation
+	  for this)
+
+0.5.5:
+	* Fixed a bug where insertion after rehashing could trigger an
+	  internal error (thanks to Mike Mulligan for providing the patch)
+	* Minor documentation fix
+
+0.5.4:
+	* Added ght_replace() to replace a current entry. Faster than
+	  ght_remove() followed by ght_insert().
+	* Added ght_table_size() to get the current size of the
+	  table. Thanks to Muhammad Muquit <muquit@muquit.com> for the
+	  suggestion.
+	* Added check for __cplusplus (to use extern "C" {)
+	* Fix for warning in configure.in
+	* Fixed aliasing warnings with GCC 3.3 in the example programs.
+	* Added an interactive example (written by Muhammad Muquit)
+	* Added Makefile for VC++/Windows (Muhammad Muquit).
+
+0.5.3:
+	* Performance improvement release (probably 5-7% faster than last)
+	* Removed recursive functions
+	* Inlined helper functions (where possible)
+	* Simplified some code, datastructures
+	* Restructured the code a bit, removed unused stuff (printouts)
+
+0.5.2:
+	* Fixed the bug causing crashes when deleting entries during
+  	  iteration. Note that removing entries during an iteration
+	  can still cause a crash.
+	* Changed the prototype of ght_create to only take the number of
+	  buckets as argument. You can set the heuristics and rehashing
+	  with the ght_set_heuristics() and ght_set_rehash() functions.
+	* Added an example program that demonstrates iteration.
+	* Added some documentation (explanations of default values).
+	* Some cleanup of the example programs.
+	* Fixed the configure-script a bit.
+
+0.5.1:
+	* Added the possibility to use a custom malloc/free for
+	  entries. This should make the table faster where custom
+	  allocators are applicable.
+	* Implemented functions to set properties of the table,
+      	  i.e. ght_set_alloc(), ght_set_heuristics() etc.
+	* Fixed bug that caused the move-to-front heuristics to never be
+	  set.
+	* Added example program for custom allocators.
+	* Fixed the documentation a bit.
+	* General code-cleanup (i.e. whitespace cleanup etc)
+
+0.5:
+	* Changed the documentation a bit.
+	* Rehash before we insert the new entry (at least one less entry
+	  to reinsert).
+	* Added a benchmark program for different hash tables. The
+	  benchmark is basically the dict_example.c program, with backends
+	  for different hash tables (currently GNU libc hsearch and the
+	  C++ STL hash_map, feel free to add more).
+	* Heuristics are only applied on ght_get() now (since they
+	  are unessessary for ght_remove() and ght_insert()).
+	* No longer calculates the hash value twice for inserting.
+	* Removed callocs (replaced with malloc+memset).
+	* Changed build system to use GNU automake / autoconf (should now
+	  hopefully behave more as a normal library).
+	* Added an example program that collects the words from a text
+	  file, enters those into a hash table and then reads another text
+	  file and looks up the words in that in the table. (dict_example.c)
+	* Implemented the possibility to do several iterations at once and
+	  therefore changed ght_first() and ght_next().
+
+0.4-MK2
+	* Changed the license to GNU LGPL.
+	* Fixed bug when rehashing (the size mask was unchanged).
+	* Changed the programming interface quite a bit. See the
+	  documentation for more about how to use the hash table.
+	* Stores key data within the table (i.e. you should no longer
+	  pass allocated key data to the table).
+	* Added CRC32 hash from comp.compression.FAQ, thanks to
+	  Dru Lemley <spambait@lemley.net> for this
+	* Removed shameful performance bug in one-at-a-time hash and
+	  rotating hash, found by Dru Lemley <spambait@lemley.net>.
+	  This makes use of the table about 2 twice as fast as before...
+
+0.3
+
+	* Added real documentation, built with doxygen.
+	* Performance enhancements by using powers of two for table size,
+	  allowing divisions to be replaced with binary ANDs.
+	* Freeing an entry frees the associated key as well,
+	  even if b_delete_data is FALSE.
+	* The keys are hopefully free'd correctly now.
+	* Replaced runtime checks for NULL with asserts (the program
+	  will not work correctly anyhow if you supply the NULLs!)
+	* Added simple.c example program.
+
+
+0.2
+
+	* Do not export local functions
+	* Added option to manually specify rehashing
+
+
+0.1
+
+	Initial release

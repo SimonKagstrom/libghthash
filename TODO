@@ -1,0 +1,43 @@
+* Lookup mingw problems with autoconf.
+
+  From Aaron Schweiger:
+
+   As a work-around I modified the configure script, line 1135 so,
+
+    cat conftest.$ac_ext >&5
+    rm -rf conftest*
+    CPP=cpp                              // CHANGED /lib/cpp -> cpp
+    fi
+    rm -f conftest*
+    fi
+
+   ...
+
+   What I did was change all /tmp/conftestval to:
+
+    __TMPFILE=conftestval
+
+   That allowed configure to run cleanly.
+
+
+* Keep entries in a list as well as in the hash table for faster
+  iteration.
+
+  Is this nessessary? Maybe not since the current behavior causes the
+  table to iterate (comparatively) slow when there are few entries and
+  many buckets. This causes the iteration to be about as slow with many
+  entries as with few.
+
+  See below for a list structure.
+
+* Remove the list-pointers from the hash entry structure and instead
+  use a list_t which contains the hash entries. Like:
+
+  typedef struct s_l
+  {
+     struct s_l *p_next;
+     struct s_l *p_prev;
+     void *p_data;
+  } ght_list_t;
+
+  and point the p_data to the hash entries.

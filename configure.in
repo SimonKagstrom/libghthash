@@ -1,0 +1,145 @@
+# -*- sh -*- (looks nicer that way!)
+# This is the configure.in script for libghthash.
+
+AC_INIT(src/hash_table.c)
+
+# Check for sizes of different types
+AC_DEFUN([GET_SIZEOF],
+    [
+    __TMPFILE=/tmp/conftestval   # Change this to something really unique.
+    echo -n "checking size of $2... "
+    AC_TRY_RUN([
+	#include <stdio.h>
+	#include <stdlib.h>
+	int main ()
+	{
+	    FILE *f = fopen ("$__TMPFILE", "w");
+	    if (!f)
+	    exit (1);
+	    fprintf (f, "%d", sizeof ($2));
+	    fclose(f);
+	    exit (0);
+	}
+	],
+	#Success
+	$1=`cat $__TMPFILE`
+	echo `cat $__TMPFILE`
+	rm -f $__TMPFILE
+	,
+	#Failure
+	$1="CHECK_SIZE_FAILED"
+	rm -f $__TMPFILE
+	,
+	#Cross compiling - assume sizes is as on x86/GCC
+	if test $2 = int; then
+	    $1=4
+	else if test $2 = long; then
+	    $1=4
+	else if test $2 = short; then
+	    $1=2
+	else if test $2 = "long long"; then
+	    $1=8
+	fi # long long
+	fi # short
+	fi # long
+	fi # int
+	) # AC_TRY_RUN
+    ]
+)
+
+# Set various version strings - taken gratefully from the
+# SDL sources which was taken from the GTk sources
+#
+# Making releases:
+# Change
+#   MICRO_VERSION += 1;
+#   INTERFACE_AGE += 1;
+#   BINARY_AGE += 1;
+# if any functions have been added, set INTERFACE_AGE to 0.
+# if backwards compatibility has been broken,
+# set BINARY_AGE and INTERFACE_AGE to 0.
+#
+MAJOR_VERSION=0
+MINOR_VERSION=6
+MICRO_VERSION=2
+INTERFACE_AGE=0
+BINARY_AGE=1
+VERSION=$MAJOR_VERSION.$MINOR_VERSION.$MICRO_VERSION
+# For libtool
+LT_RELEASE=$MAJOR_VERSION.$MINOR_VERSION
+LT_CURRENT=`expr $MICRO_VERSION - $INTERFACE_AGE`
+LT_REVISION=$INTERFACE_AGE
+LT_AGE=`expr $BINARY_AGE - $INTERFACE_AGE`
+
+AC_SUBST(MAJOR_VERSION)
+AC_SUBST(MINOR_VERSION)
+AC_SUBST(MICRO_VERSION)
+AC_SUBST(INTERFACE_AGE)
+AC_SUBST(BINARY_AGE)
+AC_SUBST(VERSION)
+
+AC_SUBST(LT_RELEASE)
+AC_SUBST(LT_CURRENT)
+AC_SUBST(LT_REVISION)
+AC_SUBST(LT_AGE)
+
+#automake configuration
+AM_INIT_AUTOMAKE(libghthash, $VERSION)
+
+#autoheader configuration
+AM_CONFIG_HEADER(config.h)
+
+#check for programs
+AC_PROG_CC()
+AM_PROG_LIBTOOL()
+AC_PROG_INSTALL()
+AC_PROG_MAKE_SET()
+AC_LANG_C()
+AC_C_INLINE()
+
+# Check for headers
+AC_HEADER_STDC()
+AC_CHECK_HEADERS(sys/types.h stdlib.h stdio.h errno.h string.h assert.h,,AC_MSG_ERROR(required header files missing))
+
+GET_SIZEOF(SIZEOF_SHORT, short)
+GET_SIZEOF(SIZEOF_INT, int)
+GET_SIZEOF(SIZEOF_LONG, long)
+GET_SIZEOF(SIZEOF_LONG_LONG, long long)
+
+if test x$SIZEOF_INT = x4; then
+    INT32_T=int
+else if test x$SIZEOF_LONG = x4; then
+    INT32_T=long
+else if test x$SIZEOF_LONG_LONG = x4; then
+    INT32_T=long long
+else if test x$SIZEOF_SHORT =x4; then
+    INT32_T=short
+else
+    AC_MSG_ERROR(Did not find any 4-byte int type!)
+fi # SIZEOF_SHORT
+fi # SIZEOF_LONG_LONG
+fi # SIZEOF_LONG
+fi #SIZEOF_INT
+
+AC_SUBST(INT32_T)
+
+AC_ARG_ENABLE(debug,
+	      [  --enable-debug          enable debugging and disable optimisations [default=no]],
+	      DEBUG_ON=$withval,
+	      DEBUG_ON=no)
+
+# Enable debugging
+if test x$DEBUG_ON = xyes; then
+      CFLAGS="$CFLAGS -g"
+else
+#      CFLAGS='echo $CFLAGS | sed "s/-g//g"'
+      CFLAGS="$CFLAGS -DNDEBUG"
+fi
+
+# Set special cflags if GCC is used
+if test x$ac_cv_prog_gcc = xyes; then
+    CFLAGS="$CFLAGS -Wall"
+fi
+AC_SUBST(CFLAGS)
+
+AC_OUTPUT(Makefile src/ght_hash_table.h src/Makefile examples/Makefile)

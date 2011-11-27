@@ -1,0 +1,34 @@
+.TH ght_remove 3 "2005-07-21" "libghthash" "libghthash User Manual"
+.SH NAME
+ght_remove \-  remove an entry from the hash table.
+
+.SH SYNOPSIS
+.B #include <ght_hash_table.h>
+
+.BI "void *ght_remove(ght_hash_table_t *" p_ht ", unsigned int " i_key_size ", void *" p_key_data ");"
+
+.SH DESCRIPTION
+remove an entry from the hash table.
+
+.I p_ht
+is a pointer to the hash table to get from,
+.I i_key_size
+is the size of the key passed, and
+.I p_key_data
+is a pointer to the key data.
+
+.SH RETURN VALUE
+Returns a pointer to the stored data item or
+.B NULL
+if the item could not be found. The entry is removed from the hash table on
+success.
+
+.SH SEE ALSO
+
+.BR ght_insert (3), ght_get (3)
+
+libghthash is fully documented with Doxygen (in {prefix}/doc/libghthash/html/).
+
+.SH AUTHOR
+
+This manual page was created by Simon Kagstrom <ska@bth.se>.

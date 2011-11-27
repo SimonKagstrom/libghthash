@@ -1,0 +1,46 @@
+.TH ght_create 3 "2005-07-21" "libghthash" "libghthash User Manual"
+.SH NAME
+ght_create \- create a new hash table
+
+.SH SYNOPSIS
+.B #include <ght_hash_table.h>
+
+.BI "ght_hash_table_t *ght_create(unsigned int " i_size ");"
+
+.SH DESCRIPTION
+Create a new hash table with the size (number of buckets)
+.I i_size
+and return a pointer to it.
+
+The number of buckets should be about as big as the number of elements you
+wish to store in the table for good performance. The number of buckets is
+rounded to the next higher power of two.
+
+The hash table is created with
+.I ght_one_at_a_time_hash()
+as hash function, automatic rehashing disabled,
+.I malloc()
+as the memory allocator and no heuristics.
+
+
+.SH SEE ALSO
+
+.BR ght_insert (3),
+.BR ght_get (3),
+.BR ght_remove (3),
+.BR ght_replace (3),
+.BR ght_finalize (3),
+.BR ght_first (3),
+.BR ght_next (3),
+.BR ght_set_alloc (3),
+.BR ght_set_hash (3),
+.BR ght_set_heuristics (3),
+.BR ght_size (3),
+.BR ght_table_size (3),
+.BR ght_rehash (3).
+
+libghthash is fully documented with Doxygen (in {prefix}/doc/libghthash/html/).
+
+.SH AUTHOR
+
+This manual page was created by Simon Kagstrom <ska@bth.se>.

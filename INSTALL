@@ -1,0 +1,20 @@
+INSTALLING:
+You build the Generic Hash Table by running:
+
+  $ ./configure
+  $ make
+  $ su root
+    (passwd)
+  # make install
+
+The library is installed in /usr/local/lib and the include-file in
+/usr/local/include.
+
+If you don't want to use GNU autoconf, you can compile the hash table
+manually. The source file for the hash table is src/hash_table.c. You
+will have to copy src/ght_hash_table.h.in to src/ght_hash_table.h and
+manually edit src/ght_hash_table.c and replace @INT32_T@ with the 32
+bit integer on your system (most likely int).
+
+You can then link the object-file hash_table.o with your application,
+or create a library of it (how to do that varies between systems).

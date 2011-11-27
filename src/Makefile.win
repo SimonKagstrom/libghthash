@@ -1,0 +1,32 @@
+#--------------------------------------------
+# muquit@muquit.com for ghthash library
+#--------------------------------------------
+
+CC= cl /nologo /MT /W3 /Gm /GX /ZI /Od
+DEFS=  -DSTDC_HEADERS=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_MALLOC_H=1 -DHAVE_CTYPE_H=1 -DWIN32=1 -Dinline=__forceinline
+
+
+INCLUDES=  -I.
+LIBRARY=ghthash.lib
+
+# replace -O with -g in order to debug
+
+DEFINES= $(INCLUDES) $(DEFS) 
+CFLAGS= $(DEFINES)
+#CFLAGS=  $(cvars) $(cdebug) -nologo -G4 $(DEFINES)
+
+
+SRCS = hash_functions.c hash_table.c
+OBJS = hash_functions.obj hash_table.obj
+
+
+.c.obj:
+	$(CC) $(CFLAGS) -c $< -Fo$@
+
+all: $(LIBRARY)
+
+$(LIBRARY): $(OBJS)
+	link /lib /OUT:$(LIBRARY) $(OBJS) 
+
+clean:
+	-del $(OBJS) $(LIBRARY) *.ilk *.pdb *.idb

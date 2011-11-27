@@ -1,0 +1,31 @@
+#--------------------------------------------
+# Makefile for MS Visual C++
+# muquit@muquit.com for ghthash library
+#--------------------------------------------
+
+CC= cl /nologo /MT /W3 /Gm /GX /ZI /Od
+DEFS=  -DSTDC_HEADERS=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_MALLOC_H=1 -DHAVE_CTYPE_H=1 -DWIN32=1 -Dinline=__forceinline
+
+
+INCLUDES=  -I. -I../src
+LIBRARY=../src/ghthash.lib
+
+# replace -O with -g in order to debug
+
+DEFINES= $(INCLUDES) $(DEFS) 
+CFLAGS= $(DEFINES)
+#CFLAGS=  $(cvars) $(cdebug) -nologo -G4 $(DEFINES)
+
+
+all: examples
+
+examples:
+	$(CC) $(CFLAGS) -I../src simple.c -o simple.exe ../src/$(LIBRARY)
+	$(CC) $(CFLAGS) -I../src dict_example.c -o dict_example.exe ../src/$(LIBRARY)
+	$(CC) $(CFLAGS) -I../src hash_test.c -o hash_test.exe ../src/$(LIBRARY)
+	$(CC) $(CFLAGS) -I../src alloc_example.c -o alloc_example.exe ../src/$(LIBRARY)
+	$(CC) $(CFLAGS) -I../src iteration.c -o iteration.exe ../src/$(LIBRARY)
+	$(CC) $(CFLAGS) -I../src interactive.c -o interactive.exe ../src/$(LIBRARY)
+
+clean:
+	-del *.exe *.obj *.bak *.pdb *.ilk *.idb

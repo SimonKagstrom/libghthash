@@ -1,0 +1,43 @@
+.TH ght_next 3 "2005-07-21" "libghthash" "libghthash User Manual"
+.SH NAME
+ght_next \- return the next element in an iteration
+
+.SH SYNOPSIS
+.B #include <ght_hash_table.h>
+
+.BI "void *ght_next(ght_hash_table_t *" p_ht ", ght_iterator_t *" p_it ", void **" pp_key ");"
+
+.SH DESCRIPTION
+Return the next element in an iteration.
+.I p_ht
+is the hash table to iterate in,
+.I p_it
+is a pointer to the iterator to initialize, and
+.I pp_key
+is filled in with a pointer to the key for the current item.
+
+This function should be used for iteration, and must be called after
+.I ght_first.
+
+The use of the
+.I ght_iterator_t
+allows for several concurrent iterations, where you would use one
+.I ght_iterator_t
+for each iteration. In threaded environments, you should still lock access to
+the hash table for insertion and removal.
+
+.SH WARNING
+Calling this without first having called
+.I ght_first
+will give undefined results (probably a crash), since the iterator isn't
+filled correctly.
+
+.SH SEE ALSO
+
+.BR ght_first (3),
+
+libghthash is fully documented with Doxygen (in {prefix}/doc/libghthash/html/).
+
+.SH AUTHOR
+
+This manual page was created by Simon Kagstrom <ska@bth.se>.

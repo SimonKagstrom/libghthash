@@ -1,0 +1,31 @@
+.TH ght_finalize 3 "2005-07-21" "libghthash" "libghthash User Manual"
+.SH NAME
+ght_finalize \- destroy a hash table
+
+.SH SYNOPSIS
+.B #include <ght_hash_table.h>
+
+.BI "void ght_finalize(ght_hash_table_t *" p_ht ");"
+
+.SH DESCRIPTION
+Destroy the hash table
+.I p_ht
+
+This function should be called to free the memory used by the hash table. Note
+that the memory used by the entries within the hash table is not freed
+automatically, to free this, iterate over the elemnents in the table and free
+them before calling
+.I ght_finalize
+
+
+.SH SEE ALSO
+
+.BR ght_insert (3),
+.BR ght_first (3),
+.BR ght_next (3),
+
+libghthash is fully documented with Doxygen (in {prefix}/doc/libghthash/html/).
+
+.SH AUTHOR
+
+This manual page was created by Simon Kagstrom <ska@bth.se>.

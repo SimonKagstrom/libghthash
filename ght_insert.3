@@ -1,0 +1,42 @@
+.TH ght_insert 3 "2005-07-21" "libghthash" "libghthash User Manual"
+.SH NAME
+ght_insert \- insert an entry into the hash table.
+
+.SH SYNOPSIS
+.B #include <ght_hash_table.h>
+
+.BI "int ght_insert(ght_hash_table_t *" p_ht ", void *" p_entry_data ", unsigned int " i_key_size ", void *" p_key_data ");"
+
+.SH DESCRIPTION
+Insert an entry into the hash table, i.e., associate a particular piece of
+data with a key. Prior to inserting anything, make sure that the table is
+created with
+.I ght_create()
+\.If an element with the same key as this one already exists in the table, the
+insertion will fail.
+
+.I p_ht
+is a pointer to the hash table to insert into,
+.I p_entry_data
+is a pointer to the value to store,
+.I i_key_size
+is the size of the key passed, and
+.I p_key_data
+is a pointer to the key data.
+
+.SH RETURN VALUE
+Returns
+.B 0
+if the element could be inserted,
+.B -1
+otherwise.
+
+.SH SEE ALSO
+
+.BR ght_create (3),
+
+libghthash is fully documented with Doxygen (in {prefix}/doc/libghthash/html/).
+
+.SH AUTHOR
+
+This manual page was created by Simon Kagstrom <ska@bth.se>.
